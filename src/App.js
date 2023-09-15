@@ -65,7 +65,14 @@ const Hover = () => {
   const setCoords = useContext(settingCoords);
   const setHover = useContext(changeHover);
   const hover = useContext(mouseHover)
+  const [pos, setPos] = useState({ xPos: 0, yPos: 0 })
 
+  const mouseMove = (e) => {
+    const { top, left, width, height } = ref.current.getBoundingClientRect();
+    const xPos = e.clientX - (left + width / 2);
+    const yPos = e.clientY - (top + height / 2);
+    setPos({ xPos, yPos })
+  }
 
 
   useEffect(() => {
@@ -74,16 +81,24 @@ const Hover = () => {
     const centerY = (top + height / 2) - 10;
     console.log(x, y)
     setCoords({ x: centerX, y: centerY })
-  }, [setCoords])
+  }, [pos])
+
+  useEffect(() => {
+    window.addEventListener('mousemove', mouseMove)
+  }, [pos])
+
 
 
 
   return (
     <>
 
-      <div className={hover ? 'hoverObject changeHover' : 'hoverObject'} onMouseEnter={() => setHover(true)}
+      <motion.div
+        className={hover ? 'changeHover hoverObject' : 'hoverObject'}
+        animate={hover ? { x: pos.xPos, y: pos.yPos } : { x: 0, y: 0 }}
+        onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
-        ref={ref}></div>
+        ref={ref}></motion.div>
     </>
   )
 }
