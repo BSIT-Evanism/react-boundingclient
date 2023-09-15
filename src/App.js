@@ -53,7 +53,8 @@ const Cursor = () => {
   return (
     <motion.div
       className='cursor'
-      animate={hover ? { x: x, y: y } : { x: position.x, y: position.y }}
+
+      animate={hover ? { x: x, y: y, scale: 3 } : { x: position.x, y: position.y, scale: 0.9 }}
 
     ></motion.div>
   )
